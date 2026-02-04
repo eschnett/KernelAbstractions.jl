@@ -27,7 +27,16 @@ end
 function check_for_overdub(stmt)
     if stmt isa Expr
         if stmt.head == :invoke
-            mi = first(stmt.args)::Core.MethodInstance
+            mi = first(stmt.args)
+            if !(mi isa Core.MethodInstance)
+                @show mi
+                @show typeof(mi)
+                @show stme
+            end
+            # if mi isa Core.CodeInstance
+            #     mi = mi.def
+            # end
+            mi::Core.MethodInstance
             if mi.def.name === :overdub
                 @show stmt
                 return true
